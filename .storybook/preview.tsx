@@ -1,5 +1,7 @@
 import type { Preview, ReactRenderer } from "@storybook/react-vite";
 import { withThemeByClassName } from "@storybook/addon-themes";
+// @ts-expect-error -- Storybook loads CSS at runtime
+import "@/index.css";
 
 const preview: Preview = {
   parameters: {
