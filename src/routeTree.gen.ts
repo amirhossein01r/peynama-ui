@@ -9,27 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MoviesSplatRouteImport } from './routes/movies.$'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const MoviesSplatRoute = MoviesSplatRouteImport.update({
+  id: '/movies/$',
+  path: '/movies/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/movies/$': typeof MoviesSplatRoute
+}
+export interface FileRoutesByTo {
+  '/movies/$': typeof MoviesSplatRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/movies/$': typeof MoviesSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths: '/movies/$'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/movies/$'
+  id: '__root__' | '/movies/$'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  MoviesSplatRoute: typeof MoviesSplatRoute
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/movies/$': {
+      id: '/movies/$'
+      path: '/movies/$'
+      fullPath: '/movies/$'
+      preLoaderRoute: typeof MoviesSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  MoviesSplatRoute: MoviesSplatRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
