@@ -9,10 +9,22 @@ import {
 
 function mapMovieToMetadata(movie: Movie): MetadataGroupData[] {
   return [
-    { title: "ژانرها", items: toGenreMetadata(movie.genres) },
-    { title: "زبان‌ها", items: toLanguageMetadata(movie.spoken_languages) },
-    { title: "کشورها", items: toCountryMetadata(movie.production_countries) },
-    { title: "واژگان کلیدی", items: toKeywordMetadata(movie.keywords) },
+    { title: "ژانرها", type: "genres", items: toGenreMetadata(movie.genres) },
+    {
+      title: "زبان‌ها",
+      type: "languages",
+      items: toLanguageMetadata(movie.spoken_languages),
+    },
+    {
+      title: "کشورها",
+      type: "countries",
+      items: toCountryMetadata(movie.production_countries),
+    },
+    {
+      title: "واژگان کلیدی",
+      type: "keywords",
+      items: toKeywordMetadata(movie.keywords),
+    },
   ];
 }
 

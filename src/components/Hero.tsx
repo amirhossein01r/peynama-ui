@@ -64,7 +64,11 @@ function Hero({ movie }: { movie: Movie }) {
               {/* metadata */}
               <div className="space-y-4" dir="rtl">
                 {metadataGroups.map((group) => (
-                  <MetadataGroup title={group.title} items={group.items} />
+                  <MetadataGroup
+                    title={group.title}
+                    items={group.items}
+                    type={group.type}
+                  />
                 ))}
               </div>
             </div>

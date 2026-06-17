@@ -5,6 +5,7 @@ interface MetadataItem {
 
 interface MetadataGroupData {
   title: string;
+  type: "genres" | "languages" | "countries" | "keywords";
   items: MetadataItem[];
 }
 
