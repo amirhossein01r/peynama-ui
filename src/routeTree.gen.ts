@@ -10,32 +10,42 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MoviesSplatRouteImport } from './routes/movies.$'
+import { Route as TypeSlugRouteImport } from './routes/$type.$slug'
 
 const MoviesSplatRoute = MoviesSplatRouteImport.update({
   id: '/movies/$',
   path: '/movies/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TypeSlugRoute = TypeSlugRouteImport.update({
+  id: '/$type/$slug',
+  path: '/$type/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/$type/$slug': typeof TypeSlugRoute
   '/movies/$': typeof MoviesSplatRoute
 }
 export interface FileRoutesByTo {
+  '/$type/$slug': typeof TypeSlugRoute
   '/movies/$': typeof MoviesSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/$type/$slug': typeof TypeSlugRoute
   '/movies/$': typeof MoviesSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/movies/$'
+  fullPaths: '/$type/$slug' | '/movies/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/movies/$'
-  id: '__root__' | '/movies/$'
+  to: '/$type/$slug' | '/movies/$'
+  id: '__root__' | '/$type/$slug' | '/movies/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  TypeSlugRoute: typeof TypeSlugRoute
   MoviesSplatRoute: typeof MoviesSplatRoute
 }
 
@@ -48,10 +58,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$type/$slug': {
+      id: '/$type/$slug'
+      path: '/$type/$slug'
+      fullPath: '/$type/$slug'
+      preLoaderRoute: typeof TypeSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  TypeSlugRoute: TypeSlugRoute,
   MoviesSplatRoute: MoviesSplatRoute,
 }
 export const routeTree = rootRouteImport
