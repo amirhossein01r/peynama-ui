@@ -1,5 +1,6 @@
 import type { CardProps } from "@/types/card";
 import { Link } from "@tanstack/react-router";
+import slugify from "slugify";
 
 function Card({ item }: CardProps) {
   return (
@@ -19,7 +20,12 @@ function Card({ item }: CardProps) {
         hover:shadow-lg
       "
     >
-      <Link to="/movies/$" params={{ _splat: item.url }}>
+      <Link
+        to={item.type == "movie" ? "/movies/$" : "/tv-shows/$"}
+        params={{
+          _splat: `${item.id}-${slugify(item.title, { lower: true })}`,
+        }}
+      >
         <div className="relative aspect-2/3 overflow-hidden">
           <img
             src={item.poster_url}

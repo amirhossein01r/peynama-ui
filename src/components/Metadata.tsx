@@ -20,6 +20,7 @@ function MetadataBadge({ item, type }: { item: MetadataItem; type: string }) {
         type,
         slug: item.slug,
       }}
+      search={{ page: 1 }}
       className="inline-flex items-center gap-1 rounded-lg border border-zinc-800/60 px-3 py-1.5 text-sm text-zinc-300 transition-all hover:text-white bg-zinc-100/2  "
     >
       {item.name}

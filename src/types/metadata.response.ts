@@ -1,13 +1,13 @@
-interface MovieItem {
+interface Item {
   id: number | string;
+  type: "movie" | "tv_show";
   title: string;
-  url: string;
   poster_url: string;
 }
 
 interface ResultsData {
   title: string;
-  items: MovieItem[];
+  items: Item[];
 }
 
 interface MetadataResponse {
@@ -17,4 +17,4 @@ interface MetadataResponse {
   results: ResultsData;
 }
 
-export type { MetadataResponse };
+export type { Item, MetadataResponse };

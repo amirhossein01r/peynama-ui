@@ -1,10 +1,7 @@
+import type { Item } from "@/types/metadata.response";
+
 type CardProps = {
-  item: {
-    id: number | string;
-    title: string;
-    url: string;
-    poster_url: string;
-  };
+  item: Item;
 };
 
 export type { CardProps };
