@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TvShowsSplatRouteImport } from './routes/tv-shows.$'
 import { Route as MoviesSplatRouteImport } from './routes/movies.$'
 import { Route as TypeSlugRouteImport } from './routes/$type.$slug'
 
+const TvShowsSplatRoute = TvShowsSplatRouteImport.update({
+  id: '/tv-shows/$',
+  path: '/tv-shows/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MoviesSplatRoute = MoviesSplatRouteImport.update({
   id: '/movies/$',
   path: '/movies/$',
@@ -26,31 +32,42 @@ const TypeSlugRoute = TypeSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/$type/$slug': typeof TypeSlugRoute
   '/movies/$': typeof MoviesSplatRoute
+  '/tv-shows/$': typeof TvShowsSplatRoute
 }
 export interface FileRoutesByTo {
   '/$type/$slug': typeof TypeSlugRoute
   '/movies/$': typeof MoviesSplatRoute
+  '/tv-shows/$': typeof TvShowsSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/$type/$slug': typeof TypeSlugRoute
   '/movies/$': typeof MoviesSplatRoute
+  '/tv-shows/$': typeof TvShowsSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/$type/$slug' | '/movies/$'
+  fullPaths: '/$type/$slug' | '/movies/$' | '/tv-shows/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/$type/$slug' | '/movies/$'
-  id: '__root__' | '/$type/$slug' | '/movies/$'
+  to: '/$type/$slug' | '/movies/$' | '/tv-shows/$'
+  id: '__root__' | '/$type/$slug' | '/movies/$' | '/tv-shows/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   TypeSlugRoute: typeof TypeSlugRoute
   MoviesSplatRoute: typeof MoviesSplatRoute
+  TvShowsSplatRoute: typeof TvShowsSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tv-shows/$': {
+      id: '/tv-shows/$'
+      path: '/tv-shows/$'
+      fullPath: '/tv-shows/$'
+      preLoaderRoute: typeof TvShowsSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/movies/$': {
       id: '/movies/$'
       path: '/movies/$'
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   TypeSlugRoute: TypeSlugRoute,
   MoviesSplatRoute: MoviesSplatRoute,
+  TvShowsSplatRoute: TvShowsSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

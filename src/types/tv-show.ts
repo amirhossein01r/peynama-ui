@@ -1,5 +1,5 @@
 import type { Title } from "@/types/base";
 
-type Movie = Title;
+type TVShow = Title;
 
-export type { Movie };
+export type { TVShow };
