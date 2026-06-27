@@ -2,6 +2,10 @@ import type { Movie } from "@/types/movie";
 import { mapMovieToMetadata } from "@/lib/metadata.mapper";
 import { MetadataGroup } from "./Metadata";
 import { useEffect, useState } from "react";
+import api from "@/lib/api";
+import { TitlePoster } from "@/components/TitlePoster";
+import { TitleTrackingForm } from "@/components/TitleTrackingForm";
+import type { TitleTracking, TitleTrackingStatus } from "@/types/title";
 
 function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
@@ -20,9 +24,42 @@ function useMediaQuery(query: string) {
   return matches;
 }
 
-function Hero({ movie }: { movie: Movie }) {
+type Payload = {
+  status: TitleTrackingStatus;
+  rating?: number;
+};
+
+function Hero({ movie, tracking }: { movie: Movie; tracking: TitleTracking }) {
   const metadataGroups = mapMovieToMetadata(movie);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [open, setOpen] = useState(false);
+
+  const [tracker, setTracker] = useState<TitleTracking | null>(tracking);
+  const hasData = !!tracker;
+
+  const onSave = (status: TitleTrackingStatus, rating: number) => {
+    const payload: Payload = {
+      status,
+    };
+
+    if (status !== "plan_to_watch") {
+      payload.rating = rating;
+    }
+
+    api.post(`/api/v1/titles/${movie.id}/tracking/`, payload);
+    setTracker({
+      tracked: true,
+      status: payload.status,
+      rating: payload.rating ?? null,
+    });
+    setOpen(false);
+  };
+
+  const onDelete = () => {
+    api.delete(`/api/v1/titles/${movie.id}/tracking/`);
+    setTracker(null);
+    setOpen(false);
+  };
 
   return (
     <>
@@ -44,9 +81,18 @@ function Hero({ movie }: { movie: Movie }) {
         <div className="relative mx-auto max-w-7xl px-8 mt-20">
           <div className="flex flex-col gap-10 md:flex-row md:items-start">
             {/* poster */}
-            <div className="w-fit shrink-0 overflow-hidden rounded-3xl border border-white/10 mx-auto">
-              <img src={movie.poster_url} className="w-90 aspect-2/3" />
-            </div>
+            <TitlePoster
+              title={movie}
+              hasData={hasData}
+              open={open}
+              setOpen={setOpen}
+            >
+              <TitleTrackingForm
+                tracker={tracker}
+                onSave={onSave}
+                onDelete={onDelete}
+              />
+            </TitlePoster>
 
             {/* content */}
             <div className="max-w-4xl flex flex-col gap-8 mt-4 w-full">

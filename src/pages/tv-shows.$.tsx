@@ -2,10 +2,10 @@ import { Hero } from "@/components/Hero";
 import { useLoaderData } from "@tanstack/react-router";
 
 function RouteComponent() {
-  const data = useLoaderData({ from: "/tv-shows/$" });
+  const { title, tracking } = useLoaderData({ from: "/tv-shows/$" });
   return (
     <main className="min-h-screen bg-background">
-      <Hero movie={data} />
+      <Hero movie={title} tracking={tracking} />
     </main>
   );
 }

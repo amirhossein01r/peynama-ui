@@ -1,6 +1,8 @@
 import type { Title } from "@/types/base";
 import { toAbsoluteUrl } from "@/lib/urls";
 import { notFound, redirect } from "@tanstack/react-router";
+import type { TitleTracking } from "@/types/title";
+import api from "@/lib/api";
 
 function createTitleLoader<T extends Title>(apiPath: string) {
   return async ({ params }: { params: { _splat: string } }) => {
@@ -23,4 +25,15 @@ function createTitleLoader<T extends Title>(apiPath: string) {
   };
 }
 
-export { createTitleLoader };
+async function fetchTracking(titleId: number): Promise<TitleTracking | null> {
+  try {
+    const { data } = await api.get<TitleTracking>(
+      `/api/v1/titles/${titleId}/tracking/`,
+    );
+    return data.tracked ? data : null;
+  } catch {
+    return null;
+  }
+}
+
+export { createTitleLoader, fetchTracking };
