@@ -4,4 +4,10 @@ type CardProps = {
   item: TitleItem;
 };
 
-export type { CardProps };
+interface CardCarouselProps {
+  title: string;
+  items: TitleItem[];
+  linkTo: string;
+}
+
+export type { CardProps, CardCarouselProps };
