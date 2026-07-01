@@ -1,3 +1,10 @@
+interface TitleItem {
+  id: number | string;
+  type: "movie" | "tv_show";
+  title: string;
+  poster_url: string;
+}
+
 type TitleTrackingStatus = "plan_to_watch" | "completed" | "dropped";
 type TitleTracking =
   | {
@@ -9,4 +16,4 @@ type TitleTracking =
       rating: number | null;
     };
 
-export type { TitleTracking, TitleTrackingStatus };
+export type { TitleItem, TitleTracking, TitleTrackingStatus };

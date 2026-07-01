@@ -1,7 +1,7 @@
-import type { Item } from "@/types/metadata.response";
+import type { TitleItem } from "./title";
 
 type CardProps = {
-  item: Item;
+  item: TitleItem;
 };
 
 export type { CardProps };
