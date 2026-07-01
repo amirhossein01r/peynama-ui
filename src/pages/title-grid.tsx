@@ -8,9 +8,10 @@ function TitleGridPage({ from }: { from: string }) {
   const {
     count,
     results: { title, items },
+    next,
   } = useLoaderData({ from }) as TitleGridResponse;
   const { page } = useSearch({ from });
-  const totalPages = Math.ceil(count / items.length);
+  const totalPages = next === null ? page : Math.ceil(count / items.length);
 
   return (
     <div className="min-h-screen bg-background p-10" dir="rtl">
