@@ -1,9 +1,13 @@
+import { Navbar } from "@/components/Navbar";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 const RootLayout = () => (
   <>
-    <Outlet />
+    <Navbar />
+    <main className="min-h-screen pt-14 bg-background">
+      <Outlet />
+    </main>
     <TanStackRouterDevtools />
   </>
 );

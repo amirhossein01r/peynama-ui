@@ -63,7 +63,10 @@ function Hero({ movie, tracking }: { movie: Movie; tracking: TitleTracking }) {
 
   return (
     <>
-      <section className="relative overflow-hidden" dir="rtl">
+      <section
+        className="min-h-[calc(100vh-3.5rem)] relative overflow-hidden -top-14"
+        dir="rtl"
+      >
         {/* backdrop */}
         <div className="absolute inset-0">
           {isDesktop && (
