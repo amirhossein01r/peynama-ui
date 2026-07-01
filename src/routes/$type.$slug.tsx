@@ -1,45 +1,22 @@
-import { queryClient } from "@/lib/query-client";
-import { toAbsoluteUrl } from "@/lib/urls";
-import { RouteComponent } from "@/pages/$type.$slug";
-import type { MetadataResponse } from "@/types/metadata.response";
-
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { z } from "zod";
+import { paginationLoaderDeps, paginationSearch } from "@/lib/pagination";
+import { fetchQuery } from "@/lib/query";
+import { TitleGridPage } from "@/pages/title-grid";
+import { createFileRoute } from "@tanstack/react-router";
 
 const Route = createFileRoute("/$type/$slug")({
-  validateSearch: z.object({
-    page: z.coerce
-      .number()
-      .int()
-      .catch(1)
-      .transform((v) => Math.max(1, v)),
-  }),
-
-  loaderDeps: ({ search }) => ({
-    page: search.page,
-  }),
-
-  loader: async ({ params, deps }) => {
+  validateSearch: paginationSearch,
+  loaderDeps: paginationLoaderDeps,
+  loader: async ({ params, deps, context: { queryClient } }) => {
     const { type, slug } = params;
     const { page } = deps;
 
-    return await queryClient.ensureQueryData<MetadataResponse>({
+    return await queryClient.ensureQueryData({
       queryKey: ["metadata", type, slug, page],
-      queryFn: async () => {
-        const url = toAbsoluteUrl(`/api/v1/${type}/${slug}?page=${page}`);
-
-        const res = await fetch(url);
-
-        if (!res.ok) {
-          throw notFound();
-        }
-
-        return res.json();
-      },
+      queryFn: fetchQuery(`/api/v1/${type}/${slug}?page=${page}`),
     });
   },
 
-  component: RouteComponent,
+  component: () => <TitleGridPage from="/$type/$slug" />,
 });
 
 export { Route };

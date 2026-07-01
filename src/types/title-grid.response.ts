@@ -5,11 +5,11 @@ interface ResultsData {
   items: TitleItem[];
 }
 
-interface MetadataResponse {
+interface TitleGridResponse {
   count: number;
   next: string | null;
   previous: string | null;
   results: ResultsData;
 }
 
-export type { MetadataResponse };
+export type { TitleGridResponse };

@@ -19,6 +19,7 @@ function Card({ item }: CardProps) {
         hover:border-primary/30
         hover:shadow-lg
       "
+      dir="ltr"
     >
       <Link
         to={item.type == "movie" ? "/movies/$" : "/tv-shows/$"}
