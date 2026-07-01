@@ -9,12 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RecommendationsRouteImport } from './routes/recommendations'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TvShowsSplatRouteImport } from './routes/tv-shows.$'
 import { Route as MoviesSplatRouteImport } from './routes/movies.$'
+import { Route as LibrarySlugRouteImport } from './routes/library.$slug'
 import { Route as TypeSlugRouteImport } from './routes/$type.$slug'
 
+const RecommendationsRoute = RecommendationsRouteImport.update({
+  id: '/recommendations',
+  path: '/recommendations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -35,6 +42,11 @@ const MoviesSplatRoute = MoviesSplatRouteImport.update({
   path: '/movies/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LibrarySlugRoute = LibrarySlugRouteImport.update({
+  id: '/library/$slug',
+  path: '/library/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TypeSlugRoute = TypeSlugRouteImport.update({
   id: '/$type/$slug',
   path: '/$type/$slug',
@@ -44,14 +56,18 @@ const TypeSlugRoute = TypeSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/recommendations': typeof RecommendationsRoute
   '/$type/$slug': typeof TypeSlugRoute
+  '/library/$slug': typeof LibrarySlugRoute
   '/movies/$': typeof MoviesSplatRoute
   '/tv-shows/$': typeof TvShowsSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/recommendations': typeof RecommendationsRoute
   '/$type/$slug': typeof TypeSlugRoute
+  '/library/$slug': typeof LibrarySlugRoute
   '/movies/$': typeof MoviesSplatRoute
   '/tv-shows/$': typeof TvShowsSplatRoute
 }
@@ -59,28 +75,61 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/recommendations': typeof RecommendationsRoute
   '/$type/$slug': typeof TypeSlugRoute
+  '/library/$slug': typeof LibrarySlugRoute
   '/movies/$': typeof MoviesSplatRoute
   '/tv-shows/$': typeof TvShowsSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/$type/$slug' | '/movies/$' | '/tv-shows/$'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/recommendations'
+    | '/$type/$slug'
+    | '/library/$slug'
+    | '/movies/$'
+    | '/tv-shows/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/$type/$slug' | '/movies/$' | '/tv-shows/$'
-  id: '__root__' | '/' | '/login' | '/$type/$slug' | '/movies/$' | '/tv-shows/$'
+  to:
+    | '/'
+    | '/login'
+    | '/recommendations'
+    | '/$type/$slug'
+    | '/library/$slug'
+    | '/movies/$'
+    | '/tv-shows/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/recommendations'
+    | '/$type/$slug'
+    | '/library/$slug'
+    | '/movies/$'
+    | '/tv-shows/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  RecommendationsRoute: typeof RecommendationsRoute
   TypeSlugRoute: typeof TypeSlugRoute
+  LibrarySlugRoute: typeof LibrarySlugRoute
   MoviesSplatRoute: typeof MoviesSplatRoute
   TvShowsSplatRoute: typeof TvShowsSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/recommendations': {
+      id: '/recommendations'
+      path: '/recommendations'
+      fullPath: '/recommendations'
+      preLoaderRoute: typeof RecommendationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -109,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/library/$slug': {
+      id: '/library/$slug'
+      path: '/library/$slug'
+      fullPath: '/library/$slug'
+      preLoaderRoute: typeof LibrarySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$type/$slug': {
       id: '/$type/$slug'
       path: '/$type/$slug'
@@ -122,7 +178,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  RecommendationsRoute: RecommendationsRoute,
   TypeSlugRoute: TypeSlugRoute,
+  LibrarySlugRoute: LibrarySlugRoute,
   MoviesSplatRoute: MoviesSplatRoute,
   TvShowsSplatRoute: TvShowsSplatRoute,
 }
