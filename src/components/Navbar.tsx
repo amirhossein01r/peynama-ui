@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { SearchBar } from "./SearchBar";
 
 const NAV_ITEMS = [
   { label: "خانه", to: "/", icon: Home },
@@ -68,6 +69,8 @@ function Navbar() {
         <Link to="/" className="font-semibold text-foreground tracking-tight">
           پی‌نما
         </Link>
+
+        <SearchBar />
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1" dir="rtl">
