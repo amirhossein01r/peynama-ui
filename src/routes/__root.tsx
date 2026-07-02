@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { NotFoundComponent } from "@/pages/404";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 const RootLayout = () => (
@@ -13,7 +14,7 @@ const RootLayout = () => (
   </>
 );
 
-const Route = createRootRoute({
+const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   component: RootLayout,
   notFoundComponent: NotFoundComponent,
 });

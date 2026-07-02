@@ -1,8 +1,10 @@
 import api, { setAccessToken, clearAccessToken } from "@/lib/api";
 import type { LoginPayload, TokenResponse, User } from "@/types/api";
+import type { QueryClient } from "@tanstack/react-query";
+import { isRedirect, redirect } from "@tanstack/react-router";
 import axios from "axios";
 
-export const authService = {
+const authService = {
   login: async (payload: LoginPayload): Promise<void> => {
     const { data } = await api.post<TokenResponse>("/auth/login/", payload);
     setAccessToken(data.access);
@@ -36,3 +38,20 @@ export const authService = {
     return data;
   },
 };
+
+const authGuard = async (queryClient: QueryClient) => {
+  try {
+    const user = await queryClient.fetchQuery({
+      queryKey: ["current-user"],
+      queryFn: () => api.get("/auth/me/").then((r) => r.data),
+      retry: false,
+    });
+
+    if (!user) throw redirect({ to: "/login" });
+  } catch (e) {
+    if (isRedirect(e)) throw e;
+    throw redirect({ to: "/login" });
+  }
+};
+
+export { authService, authGuard };
