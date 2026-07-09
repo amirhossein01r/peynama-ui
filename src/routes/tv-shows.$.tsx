@@ -5,6 +5,9 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/tv-shows/$")({
   component: RouteComponent,
+  staleTime: 0,
+  preloadStaleTime: 0,
+  gcTime: 0,
   loader: async ({ params }) => {
     const title = await createTitleLoader<TVShow>("tv-shows")({
       params: params as { _splat: string },
